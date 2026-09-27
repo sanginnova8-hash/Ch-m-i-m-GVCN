@@ -1,0 +1,108 @@
+{
+  "entities": {
+    "Student": {
+      "title": "Student",
+      "description": "Thông tin học sinh trong lớp",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "studentCode": { "type": "string", "maxLength": 50 },
+        "lastName": { "type": "string", "maxLength": 100 },
+        "firstName": { "type": "string", "maxLength": 50 },
+        "fullName": { "type": "string", "maxLength": 150 },
+        "dateOfBirth": { "type": "string", "maxLength": 20 },
+        "gender": { "type": "string", "maxLength": 10 },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "teacherId": { "type": "string", "maxLength": 128 },
+        "classId": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "studentCode", "lastName", "firstName", "fullName", "status", "teacherId"]
+    },
+    "BehaviorCategory": {
+      "title": "BehaviorCategory",
+      "description": "Danh mục hành vi vi phạm hoặc khen thưởng",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "code": { "type": "string", "maxLength": 20 },
+        "name": { "type": "string", "maxLength": 300 },
+        "type": { "type": "string", "enum": ["deduct", "bonus"] },
+        "defaultScore": { "type": "number" },
+        "basisOrRegulation": { "type": "string", "maxLength": 300 },
+        "keywords": { "type": "string", "maxLength": 500 },
+        "isActive": { "type": "boolean" },
+        "isCustom": { "type": "boolean" },
+        "teacherId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "code", "name", "type", "defaultScore", "isActive", "teacherId"]
+    },
+    "DisciplineLog": {
+      "title": "DisciplineLog",
+      "description": "Bản ghi nhật ký chấm điểm rèn luyện hàng ngày",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "date": { "type": "string", "maxLength": 20 },
+        "month": { "type": "number" },
+        "weekNumber": { "type": "number" },
+        "studentId": { "type": "string", "maxLength": 128 },
+        "studentCode": { "type": "string", "maxLength": 50 },
+        "studentName": { "type": "string", "maxLength": 150 },
+        "behaviorCode": { "type": "string", "maxLength": 50 },
+        "behaviorDescription": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string", "enum": ["deduct", "bonus"] },
+        "scorePerUnit": { "type": "number" },
+        "count": { "type": "number" },
+        "totalScore": { "type": "number" },
+        "periodOrTime": { "type": "string", "maxLength": 100 },
+        "reporter": { "type": "string", "maxLength": 100 },
+        "basisOrRegulation": { "type": "string", "maxLength": 300 },
+        "note": { "type": "string", "maxLength": 500 },
+        "teacherId": { "type": "string", "maxLength": 128 },
+        "classId": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "date", "month", "weekNumber", "studentId", "studentCode", "studentName", "type", "scorePerUnit", "count", "totalScore", "teacherId"]
+    },
+    "ClassConfig": {
+      "title": "ClassConfig",
+      "description": "Cấu hình lớp học, năm học và thang điểm",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "className": { "type": "string", "maxLength": 50 },
+        "schoolYear": { "type": "string", "maxLength": 50 },
+        "homeroomTeacher": { "type": "string", "maxLength": 100 },
+        "baseScore": { "type": "number" },
+        "minScore": { "type": "number" },
+        "maxScore": { "type": "number" },
+        "teacherId": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "className", "schoolYear", "homeroomTeacher", "baseScore", "minScore", "maxScore", "teacherId"]
+    }
+  },
+  "firestore": {
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Danh sách học sinh của giáo viên"
+    },
+    "/behaviorCategories/{categoryId}": {
+      "schema": "BehaviorCategory",
+      "description": "Danh mục hành vi nề nếp và thi đua"
+    },
+    "/disciplineLogs/{logId}": {
+      "schema": "DisciplineLog",
+      "description": "Nhật ký điểm danh, vi phạm, khen thưởng hằng ngày"
+    },
+    "/classConfigs/{configId}": {
+      "schema": "ClassConfig",
+      "description": "Cấu hình lớp học của giáo viên"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Students collection
+    match /students/{studentId} {
+      allow get: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(studentId)
+        && request.resource.data.teacherId == request.auth.uid
+        && request.resource.data.studentCode is string
+        && request.resource.data.fullName is string;
+      allow update: if isSignedIn() && isValidId(studentId)
+        && resource.data.teacherId == request.auth.uid
+        && request.resource.data.teacherId == request.auth.uid;
+      allow delete: if isSignedIn() && isValidId(studentId)
+        && resource.data.teacherId == request.auth.uid;
+    }
+
+    // Behavior Categories collection
+    match /behaviorCategories/{categoryId} {
+      allow get: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(categoryId)
+        && request.resource.data.teacherId == request.auth.uid
+        && request.resource.data.code is string
+        && request.resource.data.name is string;
+      allow update: if isSignedIn() && isValidId(categoryId)
+        && resource.data.teacherId == request.auth.uid
+        && request.resource.data.teacherId == request.auth.uid;
+      allow delete: if isSignedIn() && isValidId(categoryId)
+        && resource.data.teacherId == request.auth.uid;
+    }
+
+    // Discipline Logs collection
+    match /disciplineLogs/{logId} {
+      allow get: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(logId)
+        && request.resource.data.teacherId == request.auth.uid
+        && request.resource.data.studentId is string
+        && request.resource.data.date is string;
+      allow update: if isSignedIn() && isValidId(logId)
+        && resource.data.teacherId == request.auth.uid
+        && request.resource.data.teacherId == request.auth.uid;
+      allow delete: if isSignedIn() && isValidId(logId)
+        && resource.data.teacherId == request.auth.uid;
+    }
+
+    // Class Configs collection
+    match /classConfigs/{configId} {
+      allow get: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.teacherId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(configId)
+        && request.resource.data.teacherId == request.auth.uid
+        && request.resource.data.className is string;
+      allow update: if isSignedIn() && isValidId(configId)
+        && resource.data.teacherId == request.auth.uid
+        && request.resource.data.teacherId == request.auth.uid;
+      allow delete: if isSignedIn() && isValidId(configId)
+        && resource.data.teacherId == request.auth.uid;
+    }
+  }
+}

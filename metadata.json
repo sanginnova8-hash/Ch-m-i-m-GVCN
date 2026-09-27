@@ -1,0 +1,6 @@
+{
+  "name": "Sổ Chấm Điểm Hàng Ngày",
+  "description": "Ứng dụng ghi nhận nề nếp, tính điểm thi đua và tổng hợp rèn luyện học sinh dành cho giáo viên chủ nhiệm",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
